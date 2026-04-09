@@ -1,123 +1,131 @@
-📊 Data Science Bootcamp – Task 3
+# CSEC Data Science Bootcamp — Task 3 
 
-A clean, educational Python project that demonstrates data manipulation, exploration, cleaning, and analysis using Pandas, and provides detailed insights on the Titanic dataset.
+A professional two-part data science notebook that covers:
 
-🚀 Project Overview
+- **Part 1:** Building a custom dataset in `pandas`
+- **Part 2:** End-to-end Titanic dataset analysis (`train.csv`)
 
-This repository includes two main parts:
+This Colab project is structured to demonstrate both fundamentals and practical analytics workflow.
 
-Part 1 – Custom Dataset (Foundation)
-Build a dataset from scratch using dictionaries and Pandas, with custom indexing and structured columns.
-Part 2 – Titanic Dataset Analysis (Applied)
-Explore, clean, and analyze the Titanic dataset (train.csv) to extract meaningful insights, including survival patterns based on gender, class, and age.
+---
 
-The notebooks are designed to run seamlessly on Google Colab or Jupyter Notebook, with well-commented, readable, and professional code.
+## 🚀 Notebook Overview
 
-🗂️ Repository Structure
-Task3_DataScienceBootcamp/
-├── Part1_CustomDataset.ipynb      # Notebook for creating and exploring custom dataset
-├── Part2_TitanicAnalysis.ipynb    # Notebook for Titanic dataset analysis
-├── train.csv                      # Titanic training dataset from Kaggle
-└── README.md                      # Project overview and instructions
-File Guide
-Part1_CustomDataset.ipynb:
-Create a 5-column, 15-row dataset with a custom index
-Demonstrates pd.Series and pd.DataFrame usage
-Explains logic step-by-step with markdown
-Part2_TitanicAnalysis.ipynb:
-Explore Titanic dataset: .head(), .info(), .describe()
-Clean data: fill missing values, drop unnecessary columns, remove duplicates
-Analyze using groupby and filtering
-Extract insights based on gender, class, and age
-Step 5: Detailed survival insights with professional markdown explanations
-train.csv: Titanic dataset (download from Kaggle Titanic Competition
-)
-🔹 Part 1: Custom Dataset
+### ✅ Part 1: Create Your Own Dataset (Foundation)
 
-Objective: Build a small dataset from scratch and explore it.
+In Part 1, a custom student performance dataset is created with:
 
-Implementation Steps:
+- **5 columns** (`Name`, `Age`, `Department`, `Score`, `Graduated`)
+- **15 rows**
+- **Custom index** from `S1` to `S15`
 
-Define custom index labels (S1, S2, … S15)
-Create a dictionary of columns: Name, Age, Department, Score, Graduated
+Learning outcomes:
 
-Convert to Pandas DataFrame:
+- Creating a `DataFrame` from dictionaries/lists
+- Applying custom row labels
+- Verifying shape and structure
 
-df = pd.DataFrame(data_dict, index=index_labels)
+### ✅ Part 2: Titanic Dataset Analysis
 
-Display the dataset using:
+In Part 2, a complete analysis workflow is applied to the Titanic training dataset:
 
-df.head()
+1. **Data Exploration** (`head`, `info`, `describe`)
+2. **Data Cleaning** (missing values + dropping high-missing column)
+3. **Grouped Analysis** (`groupby` survival insights)
+4. **Filtering** key passenger groups
+5. **Insight Interpretation** from observed patterns
 
-Outcome: A clean, structured dataset ready for further operations.
+---
 
-🔹 Part 2: Titanic Dataset Analysis
+## 🧠 Core Analytical Logic
 
-Objective: Explore, clean, analyze, and interpret the Titanic dataset.
+### Survival Rate Computation
 
-Step 1: Exploration
-Preview data: .head()
-Check structure: .info()
-Describe numeric features: .describe()
-Step 2: Data Cleaning
-Age: Fill missing with median
-Embarked: Fill missing with mode
-Cabin: Drop column
-Remove duplicates
-Step 3: Analysis (using groupby)
-Survival by gender
-Survival by class
-Average age per class
-Survival by age group (Child, Teen, Adult, Senior)
-Step 4: Filtering
-Female passengers who survived
-Children who survived
-1st class passengers with high survival probability
-Step 5: Insights (Detailed)
-┌─────────────────────────────┐
-│ 1️⃣ Gender                   │
-│ Females survived more than   │
-│ males (Female 74% vs Male 19%)│
-│ → "Women and children first" │
-├─────────────────────────────┤
-│ 2️⃣ Class                     │
-│ 1st Class: 63%, 2nd: 47%,   │
-│ 3rd: 24% → Higher class =   │
-│ easier access to lifeboats   │
-├─────────────────────────────┤
-│ 3️⃣ Age Group                 │
-│ Children <12: 60% survival,  │
-│ Adult: 38%, Senior: 20%     │
-│ → Children prioritized       │
-├─────────────────────────────┤
-│ 4️⃣ Highest Survival Combo    │
-│ Female + 1st Class + Child  │
-│ → Close to 100% survival    │
-└─────────────────────────────┘
+For a selected group, survival rate is:
 
-Key Learnings:
+$$
+	ext{Survival Rate} = \frac{\text{Survivors in Group}}{\text{Total Passengers in Group}}
+$$
 
-Gender, class, and age strongly influenced survival
-Female + 1st class + child had highest survival probability
-Demonstrates practical use of Pandas for data analysis and insights
-⚙️ Setup Instructions
-Clone the repository:
-git clone https://github.com/your-username/Task3_DataScienceBootcamp.git
-cd Task3_DataScienceBootcamp
-Open notebooks in Google Colab or Jupyter Notebook
-For Part 2 (Titanic Analysis), upload train.csv in Colab:
-from google.colab import files
-uploaded = files.upload()
-Run notebooks in order:
-Part1_CustomDataset.ipynb
-Part2_TitanicAnalysis.ipynb
-✅ Acceptance Criteria
- Part 1: Create DataFrame with 5 columns and 15 rows
- Part 1: Use custom index labels
- Part 2: Clean dataset (fill missing values, drop unnecessary columns)
- Part 2: Analyze survival by gender, class, and age
- Part 2: Filter specific passenger groups correctly
- Part 2: Extract insights and highest survival combination
-📜 License
+Since `Survived` is binary (`0`, `1`), the group mean directly gives survival probability:
 
-MIT License
+- `df.groupby("Sex")["Survived"].mean()`
+- `df.groupby("Pclass")["Survived"].mean()`
+- `df.groupby("AgeGroup")["Survived"].mean()`
+
+### Data Cleaning Strategy
+
+- `Age` missing values → filled with **median**
+- `Embarked` missing values → filled with **mode**
+- `Cabin` column → dropped due to many missing values
+- Duplicate rows → removed
+
+### Age Group Engineering
+
+Age bands are created with `pd.cut()`:
+
+- Child: 0–12
+- Teen: 13–18
+- Adult: 19–60
+- Senior: 61–100
+
+This supports more interpretable survival comparisons.
+
+---
+
+## 📈 Key Insights (From Analysis)
+
+1. **Females were much more likely to survive than males**
+    - Typical result: female ≈ `0.74`, male ≈ `0.19`
+
+2. **Passenger class strongly affected survival**
+    - Typical result: Class 1 ≈ `0.63`, Class 2 ≈ `0.47`, Class 3 ≈ `0.24`
+
+3. **Children had better survival rates than adults/seniors**
+    - Consistent with historical evacuation priority patterns
+
+4. **Highest survival profile**
+    - Female + 1st Class + Child (often near complete survival in this dataset subset)
+
+---
+
+
+
+## ⚙️ Run in Google Colab
+
+1. Open a new Colab notebook
+2. Copy the Part 1 and Part 2 code blocks
+3. Upload `train.csv` when running Part 2
+4. Execute cells in order
+
+If needed in Colab:
+
+```python
+import pandas as pd
+```
+
+---
+
+
+## 🛠️ Troubleshooting
+
+### `FileNotFoundError: train.csv`
+
+Cause: The file is not in the current working directory.
+
+Fix options:
+
+- In Colab: upload `train.csv` to session files
+- Locally: run from `Task3_Titanic` folder or use full file path
+
+---
+
+## ✅ Completion Checklist
+
+- [x] Created a 15-row, 5-column custom dataset with custom index
+- [x] Loaded Titanic training data
+- [x] Performed `head`, `info`, and `describe` exploration
+- [x] Cleaned missing values and removed unnecessary column
+- [x] Computed survival metrics by gender, class, and age group
+- [x] Filtered high-interest groups (female survivors, children survivors, 1st class survivors)
+- [x] Documented clear, data-driven insights
