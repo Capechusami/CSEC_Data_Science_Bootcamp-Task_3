@@ -1,4 +1,4 @@
-# CSEC Data Science Bootcamp — Task 3 
+# Titanic-and-Student-Performance-Analysis — Task 3 
 
 A professional two-part data science notebook that covers:
 
